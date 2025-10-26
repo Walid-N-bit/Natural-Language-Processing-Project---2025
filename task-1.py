@@ -4,6 +4,7 @@ import newspaper
 import csv
 
 DEFAULT_DATA_PATH = "data/articles.csv"
+DEFAULT_FIELDS = ["title", "date", "source", "article_text"]
 
 
 def is_relevant(query_words: list[str], keywords: list[str]):
@@ -61,8 +62,9 @@ def get_articles(
     return articles
 
 
-def articles2csv(articles: list[list[str]] = [], path: str = DEFAULT_DATA_PATH):
-    fields = ["title", "date", "source", "article_text"]
+def articles2csv(
+    articles: list[list[str]] = [], path: str = DEFAULT_DATA_PATH, fields=DEFAULT_FIELDS
+):
     with open(path, "w") as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(fields)
