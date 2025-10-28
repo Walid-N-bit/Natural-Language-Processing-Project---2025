@@ -1,11 +1,15 @@
 import spacy
 import matplotlib.pyplot as plt
 from nltk.tokenize import word_tokenize
+import re
 
 nlp = spacy.load("en_core_web_sm")
 
 
 def aggregate_text(data: list[list[str]]):
+    """
+    merge the article_text columns in a dataset into one string
+    """
     text = ""
     for row in data:
         text = f"{text} {row[3]}"
@@ -13,11 +17,15 @@ def aggregate_text(data: list[list[str]]):
 
 
 def raw_entities(text: str):
+    """
+    extract entities from a string of text
+    """
     doc = nlp(text)
     return doc.ents
 
 
 def extract_named_entities(text: str):
+
     doc = nlp(text)
     named_entities = {}
     for ent in doc.ents:
@@ -46,46 +54,28 @@ def plot_entity_frequency(entities: dict):
 
 
 def is_distance(ent_text: str):
-    ent_text = word_tokenize(ent_text)
-    meas_units = set(
-        [
-            "cm",
-            "meter",
-            "km/h",
-            "mph",
-            "km",
-            "kilometer",
-            "kilometers",
-            "mile",
-            "miles",
-            "kilometers per hour",
-            "miles per hour",
-            "centimeter",
-            "centimeters",
-            "inch",
-            "inches",
-            "foot",
-            "feet",
-            "yard",
-            "yards",
-        ]
+    """
+    determine if a sentence contains a unit of speed or distance measurement
+    """
+    unit_pattern = re.compile(
+        r"\d+\s*(km/h|mph|m/s|meters?|kilometers?|miles?|kms|feet|foot|inches?|centimeters?|cm|m)\b",
+        re.IGNORECASE,
     )
-
-    for token in ent_text:
-        if token in meas_units:
-            return True
-        else:
-            return False
+    if unit_pattern.search(ent_text):
+        return True
+    else:
+        return False
 
 
-def damage_summary(entities):
+def damage_summary(entities, print_sum: bool = True):
     summary = set()
     for ent in entities:
         if ent.label_ in ["CARDINAL", "MONEY"] and not is_distance(ent.text):
             summary.add(ent.sent)
-
-    for sent in summary:
-        print(sent)
+    if print_sum:
+        for sent in summary:
+            print(sent)
+    return len(summary)
 
 
 """
