@@ -7,7 +7,7 @@ import nltk
 nltk.download('punkt')
 
 # Load Dataframe
-df = pd.read_csv(r'.\data\articles.csv')#We can change which DF
+df = pd.read_csv(r'.\data\articles.csv')#We can change which DF - Its for testing
 
 print(f"Total articles loaded: {len(df)}")
 
@@ -101,11 +101,6 @@ print("\nSENTENCE COUNT:")
 print(f"  Min sentences: {lexical_df['sentence_count'].min()}")
 print(f"  Max sentences: {lexical_df['sentence_count'].max()}")
 print(f"  Mean sentences: {lexical_df['sentence_count'].mean():.1f}")
-
-if lexical_df['sentence_count'].max() == 1:
-    print("\n WARNING: All articles have only 1 sentence!")
-    print("   This indicates a problem with text preprocessing.")
-    print("   Check if article_text contains full original text.")
 
 #Save Results
 
