@@ -1,6 +1,3 @@
-# Install required packages
-# !pip install pandas wordcloud matplotlib
-
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from wordcloud import WordCloud

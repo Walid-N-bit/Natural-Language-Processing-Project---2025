@@ -1,8 +1,6 @@
-# Install required packages
-# !pip install pandas langdetect
-
 import pandas as pd
 from langdetect import detect, DetectorFactory
+
 DetectorFactory.seed = 0
 
 def filter_english_articles_with_descriptive_stats(df, output_path="data/filtered_articles.csv"):

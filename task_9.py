@@ -53,8 +53,7 @@ def emotion_intensity(raw_text: str):
 
 # damage-related words frequency
 def damage_frequency(text: str):
-    entities = raw_entities(text)
-    summary_size = damage_summary(entities, print_sum=False)
+    summary_size = damage_summary(text, print_sum=False)
     return summary_size
 
 
@@ -77,7 +76,6 @@ def impact2csv(in_data: list[list[str]], out_path: str = "data/scored_articles.c
     save to a new file with impact scores
     """
     file_exists = os.path.isfile(out_path) and os.path.getsize(out_path) > 0
-    title, _, source, _, _ = in_data[0]
     out_fields = [
         "article_title",
         "source",
@@ -89,18 +87,21 @@ def impact2csv(in_data: list[list[str]], out_path: str = "data/scored_articles.c
     out_data = []
 
     for row in in_data[1:]:
-        polarity = sentiment_polarity(row[4])
-        intensity = emotion_intensity(row[3])
-        damage = damage_frequency(row[3])
+        title, _, source, article_text, clean_text = row
+        polarity = sentiment_polarity(clean_text)
+        intensity = emotion_intensity(article_text)
+        damage = damage_frequency(article_text)
         imp_score = impcat_score(polarity, intensity, damage)
-        out_data.append([row[0], row[2], polarity, intensity, damage, imp_score])
-    for article in out_data:
-        with open(out_path, mode="a", newline="") as csvfile:
-            csvwriter = csv.writer(csvfile)
-            if not file_exists:
-                csvwriter.writerow(out_fields)
-            csvwriter.writerow(article)
-    return out_data
+        out_data.append([title, source, polarity, intensity, damage, imp_score])
+
+    sorted_data = sorted(out_data, key=lambda x: x[5])
+    file_exists = os.path.isfile(out_path) and os.path.getsize(out_path) > 0
+    with open(out_path, mode="a", newline="") as csvfile:
+        csvwriter = csv.writer(csvfile)
+        if not file_exists:
+            csvwriter.writerow(out_fields)
+        csvwriter.writerows(sorted_data)
+    return sorted_data
 
 
 # # testing

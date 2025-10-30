@@ -37,7 +37,9 @@ def extract_named_entities(text: str):
     return named_entities
 
 
-def plot_entity_frequency(entities: dict):
+def plot_entity_frequency(text: str):
+    entities = extract_named_entities(text)
+    print(entities)
     ents = list(entities.keys())
     freq = [len(entities[v]) for v in ents]
 
@@ -67,7 +69,13 @@ def is_distance(ent_text: str):
         return False
 
 
-def damage_summary(entities, print_sum: bool = True):
+def damage_summary(text: str, print_sum: bool = True):
+    """
+    calculate the number of instances in a dataset where and entity
+    is labeled as MONEY or CARDINAL. for the latter case, filter out
+    sentences describing distance or speed measurements.
+    """
+    entities = raw_entities(text)
     summary = set()
     for ent in entities:
         if ent.label_ in ["CARDINAL", "MONEY"] and not is_distance(ent.text):

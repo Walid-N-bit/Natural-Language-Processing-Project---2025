@@ -6,18 +6,9 @@ import nltk
 
 nltk.download('punkt')
 
-# Load Dataframe
-df = pd.read_csv(r'.\data\articles.csv')#We can change which DF - Its for testing
-
-print(f"Total articles loaded: {len(df)}")
-
-# Verify columns
-if 'article_text' not in df.columns:
-    raise ValueError("'article_text' column not found!")
-
 nlp = spacy.load("en_core_web_sm")
 
-#Functions
+# Functions
 
 def calculate_ttr(text):
     """TTR"""
@@ -77,33 +68,44 @@ def analyze_article_metrics(row):
         print(f"Error processing article {row.name}: {e}")
         return None
 
-##Analysis
+# # Testing
 
-print("\nCalculating lexical metrics...")
+# # Load Dataframe
+# df = pd.read_csv(r".\data\articles.csv")  # We can change which DF - Its for testing
 
-lexical_results = []
-for idx, row in df.iterrows():
-    result = analyze_article_metrics(row)
-    if result is not None:
-        lexical_results.append(result)
+# print(f"Total articles loaded: {len(df)}")
 
-lexical_df = pd.DataFrame(lexical_results)
+# # Verify columns
+# if "article_text" not in df.columns:
+#     raise ValueError("'article_text' column not found!")
 
-##Results
 
-print("\n" + "="*70)
-print("LEXICAL METRICS SUMMARY")
-print("="*70)
-print(lexical_df.describe()) ## Summary Table
+# ##Analysis
 
-# Verificar sentence_count
-print("\nSENTENCE COUNT:")
-print(f"  Min sentences: {lexical_df['sentence_count'].min()}")
-print(f"  Max sentences: {lexical_df['sentence_count'].max()}")
-print(f"  Mean sentences: {lexical_df['sentence_count'].mean():.1f}")
+# print("\nCalculating lexical metrics...")
 
-#Save Results
+# lexical_results = []
+# for idx, row in df.iterrows():
+#     result = analyze_article_metrics(row)
+#     if result is not None:
+#         lexical_results.append(result)
 
-lexical_df.to_csv(r'.\data\Lexical_Analysis.csv', index=False)
-print(f"\n Results saved to 'Lexical_Analysis.csv'")
+# lexical_df = pd.DataFrame(lexical_results)
 
+# ##Results
+
+# print("\n" + "="*70)
+# print("LEXICAL METRICS SUMMARY")
+# print("="*70)
+# print(lexical_df.describe()) ## Summary Table
+
+# # Verificar sentence_count
+# print("\nSENTENCE COUNT:")
+# print(f"  Min sentences: {lexical_df['sentence_count'].min()}")
+# print(f"  Max sentences: {lexical_df['sentence_count'].max()}")
+# print(f"  Mean sentences: {lexical_df['sentence_count'].mean():.1f}")
+
+# # Save Results
+
+# lexical_df.to_csv(r'.\data\Lexical_Analysis.csv', index=False)
+# print(f"\n Results saved to 'Lexical_Analysis.csv'")
