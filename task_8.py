@@ -107,12 +107,36 @@ ORDINAL:     “first”, “second”, etc.
 CARDINAL:    Numerals that do not fall under another type.
 """
 
+
+def affected_regions(text: str):
+    entities = raw_entities(text)
+    regions = dict()
+    for ent in entities:
+        if ent.label_ in ["GPE"]:
+            loc = ent.lemma_
+            if regions.get(loc) == None:
+                regions.update({loc: 1})
+            else:
+                regions[loc] += 1
+    sorted_regions = dict(sorted(regions.items(), key=lambda item: item[1], reverse=True))
+
+    return sorted_regions
+
+
+def affected_regions_summary(region_counts: dict, top_n: int = 5):
+    """Print top N most affected regions from region count dictionary."""
+    print("Most affected regions:")
+    for i, (region, count) in enumerate(list(region_counts.items())[:top_n], 1):
+        print(f"{i}. {region}: {count} mention(s)")
+
+
 # # testing
 
-# from task_2 import load_file
+from task_2 import load_file
 
 # text = aggregate_text(data=load_file()[1:])
 # ents = extract_named_entities(text)
 # plot_entity_frequency(ents)
 # raw_ents = raw_entities(text)
 # damage_summary(raw_ents)
+# print(affected_regions(text))
