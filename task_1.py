@@ -65,10 +65,12 @@ def get_urls(sources=[]):
     article_urls = []
     if len(sources) == 0:
         sources = [
+            "https://www.yahoo.com/news/world/",
             "https://edition.cnn.com/world",
             "https://www.aljazeera.com/news",
             "https://www.bbc.com/news",
             "https://www.cbsnews.com/",
+            "https://www.npr.org/sections/world/",
         ]
     for source in sources:
         source = source.strip()
@@ -83,6 +85,25 @@ def get_urls(sources=[]):
             print(
                 f"{bcolors.RED}Failed on {bcolors.ENDC}{source}: {bcolors.RED}{e}{bcolors.ENDC}"
             )
+    # save articles urls to a csv file
+    path = "data/articles_urls.csv"
+    fields = ["url"]
+    file_exists = os.path.isfile(path) and os.path.getsize(path) > 0
+    existing_urls = set()
+    if file_exists:
+        with open(path, "r", newline="") as csvfile:
+            reader = csv.reader(csvfile)
+            next(reader, None)
+            existing_urls = {row[0] for row in reader if row}
+
+    with open(path, "a", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        if not file_exists:
+            writer.writerow(fields)
+        for url in article_urls:
+            if url not in existing_urls:
+                writer.writerow([url])
+
     return article_urls
 
 
