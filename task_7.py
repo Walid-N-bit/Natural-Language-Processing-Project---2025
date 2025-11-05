@@ -47,7 +47,7 @@ def classify_sentiment(compound_score):
         return "neutral"
 
 
-def analyze_emotions(text, max_length=512):
+def analyze_emotions(text:str, max_length=512):
     words = text.split()
     if len(words) > max_length:
         text = " ".join(words[:max_length])

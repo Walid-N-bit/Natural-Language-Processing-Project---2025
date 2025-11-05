@@ -55,7 +55,7 @@ def plot_entity_frequency(text: str):
     # plt.show()    # for use with jupyter notebook, comment out when running script directly with python
 
 
-def is_distance(ent_text: str):
+def is_measurement(ent_text: str):
     """
     determine if a sentence contains a unit of speed or distance measurement
     """
@@ -78,7 +78,7 @@ def damage_summary(text: str, print_sum: bool = True):
     entities = raw_entities(text)
     summary = set()
     for ent in entities:
-        if ent.label_ in ["CARDINAL", "MONEY"] and not is_distance(ent.text):
+        if ent.label_ in ["CARDINAL", "MONEY"] and not is_measurement(ent.text):
             summary.add(ent.sent)
     if print_sum:
         for sent in summary:
@@ -118,7 +118,9 @@ def affected_regions(text: str):
                 regions.update({loc: 1})
             else:
                 regions[loc] += 1
-    sorted_regions = dict(sorted(regions.items(), key=lambda item: item[1], reverse=True))
+    sorted_regions = dict(
+        sorted(regions.items(), key=lambda item: item[1], reverse=True)
+    )
 
     return sorted_regions
 
@@ -132,7 +134,7 @@ def affected_regions_summary(region_counts: dict, top_n: int = 5):
 
 # # testing
 
-from task_2 import load_file
+# from task_2 import load_file
 
 # text = aggregate_text(data=load_file()[1:])
 # ents = extract_named_entities(text)
