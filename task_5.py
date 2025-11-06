@@ -43,5 +43,5 @@ def zipf_analysis(df: pd.DataFrame, print_stats: bool = True):
             print("Corpus deviates from Zipf’s Law.")
 
 # Testing
-data = pd.read_csv("data/filtered_articles.csv")
-zipf_analysis(data)
+# data = pd.read_csv("data/filtered_articles.csv")
+# zipf_analysis(data)

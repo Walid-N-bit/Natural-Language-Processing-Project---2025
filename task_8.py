@@ -2,6 +2,8 @@ import spacy
 import matplotlib.pyplot as plt
 from nltk.tokenize import word_tokenize
 import re
+from lexrank import LexRank
+from lexrank.mappings.stopwords import STOPWORDS
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -69,21 +71,27 @@ def is_measurement(ent_text: str):
         return False
 
 
-def damage_summary(text: str, print_sum: bool = True):
+def damage_sentences(text: str):
+    entities = raw_entities(text)
+    sentences = []
+    for ent in entities:
+        if ent.label_ in ["CARDINAL", "MONEY"] and not is_measurement(ent.text):
+            sentences.append(str(ent.sent))
+    sentences = list(dict.fromkeys(sentences))
+    return sentences
+
+
+def summary(text: str, summary_size: int = 5):
     """
     calculate the number of instances in a dataset where and entity
     is labeled as MONEY or CARDINAL. for the latter case, filter out
     sentences describing distance or speed measurements.
     """
-    entities = raw_entities(text)
-    summary = set()
-    for ent in entities:
-        if ent.label_ in ["CARDINAL", "MONEY"] and not is_measurement(ent.text):
-            summary.add(ent.sent)
-    if print_sum:
-        for sent in summary:
-            print(sent)
-    return len(summary)
+    sentences = damage_sentences(text)
+    lxr = LexRank(sentences, stopwords=STOPWORDS["en"])
+    summary = []
+    summary = lxr.get_summary(sentences, summary_size=summary_size, threshold=0.1)
+    return summary
 
 
 """
@@ -134,11 +142,11 @@ def affected_regions_summary(region_counts: dict, top_n: int = 5):
 
 # # testing
 
-# from task_2 import load_file
+from task_2 import load_file
 
-# text = aggregate_text(data=load_file()[1:])
+text = aggregate_text(data=load_file()[1:])
 # ents = extract_named_entities(text)
 # plot_entity_frequency(ents)
 # raw_ents = raw_entities(text)
-# damage_summary(raw_ents)
+print(summary(text))
 # print(affected_regions(text))
