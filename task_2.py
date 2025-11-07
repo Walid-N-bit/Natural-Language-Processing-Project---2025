@@ -55,14 +55,14 @@ def clean_text(data: list[list[str]]):
 
 
 # # testing
-data = load_file()
-cleaned_data = clean_text(data)
+# data = load_file()
+# cleaned_data = clean_text(data)
 
-from task_1 import articles2csv
+# from task_1 import articles2csv
 
-articles2csv(
-    articles=cleaned_data,
-    path="data/cleaned_data.csv",
-    fields=["title", "date", "source", "article_text", "clean_text"],
-)
+# articles2csv(
+#     articles=cleaned_data,
+#     path="data/cleaned_data.csv",
+#     fields=["title", "date", "source", "article_text", "clean_text"],
+# )
 # print(load_file(path="data/cleaned_data.csv")[1][4][3])

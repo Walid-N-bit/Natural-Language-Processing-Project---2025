@@ -20,56 +20,6 @@ def is_relevant(query_words: list[str], keywords: list[str]):
     return set(qw).issubset(set(kw))
 
 
-# def is_article_url(url: str):
-#     """
-#     compare link path terms with non-article related terms, return true if the link doesn't
-#     contain any of them. return false otherwise
-#     """
-#     unwanted_terms = set(
-#         [
-#             "video",
-#             "videos",
-#             "live",
-#             "politics",
-#             "business",
-#             "ebusiness",
-#             "travel",
-#             "style",
-#             "culture",
-#             "audio",
-#             "subscription",
-#             "cnn-underscored",
-#             "deals",
-#             "podcast",
-#             "podcasts",
-#             "sport",
-#             "sports",
-#             "shop",
-#             "gallery",
-#             "pictures",
-#             "tech",
-#             "technology",
-#             "opinions",
-#             "entertainment",
-#             "bleacherreport.com",
-#             "cnnespanol.cnn.com",
-#             "arabic.cnn.com",
-#             "fi",
-#             "fr",
-#             "zh",
-#             "ar",
-#             "de",
-#             "es",
-#         ]
-#     )
-#     url_terms = url.split("/")
-#     for term in unwanted_terms:
-#         if term in url_terms:
-#             return False
-#     else:
-#         return True
-
-
 def is_article_url(url: str):
     """
     Return True if the URL likely points to an article (i.e., it doesn't contain
