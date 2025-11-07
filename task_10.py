@@ -1,8 +1,3 @@
-"""
-dashboard should have:
-- emotion score and
-"""
-
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -177,24 +172,23 @@ def streamlit_dash(
         st.plotly_chart(fig, use_container_width=True)
 
 
-# # Testing
+# Testing
 
-# data1 = pd.read_csv("data/cleaned_data.csv")
-# data2 = pd.read_csv(
-#     "data/sentiment_emotion_analysis.csv",
-#     usecols=["anger", "disgust", "fear", "joy", "neutral", "sadness", "surprise"],
-# )
-# data3 = pd.read_csv(
-#     "data/scored_articles.csv",
-#     usecols=[
-#         "neg_emo_intensity",
-#         "neu_emo_intensity",
-#         "pos_emo_intensity",
-#         "sentiment_polarity",
-#         "damage_frequency",
-#         "impact_score",
-#     ],
-# )
+data1 = pd.read_csv("data/cleaned_data.csv")
+data2 = pd.read_csv(
+    "data/sentiment_emotion_analysis.csv",
+    usecols=["anger", "disgust", "fear", "joy", "neutral", "sadness", "surprise"],
+)
+data3 = pd.read_csv(
+    "data/scored_articles.csv",
+    usecols=[
+        "neg_emo_intensity",
+        "neu_emo_intensity",
+        "pos_emo_intensity",
+        "sentiment_polarity",
+        "damage_frequency",
+        "impact_score",
+    ],
+)
 
-# streamlit_dash(data1, data2, data3)
-# sentiment_scatterplot(data3)
+streamlit_dash(data1, data2, data3)
